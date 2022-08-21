@@ -1,0 +1,39 @@
+{
+  "name": "@funpack/cli",
+  "version": "0.1.1",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "module": "dist/index.js",
+  "engines": {
+    "node": ">=14.18.3"
+  },
+  "keywords": ["cloud functions"],
+  "bin": {
+    "funpack": "bin/funpack.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
+  "types": "dist/type.d.ts",
+  "dependencies": {
+    "@swc/core": "^1.2.241",
+    "clean-webpack-plugin": "^4.0.0",
+    "commander": "^9.4.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "swc-loader": "^0.2.3",
+    "webpack": "^5.74.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/webpack-node-externals": "^2.5.3",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4"
+  }
+}

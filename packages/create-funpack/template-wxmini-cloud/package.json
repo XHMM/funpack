@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "watch": "funpack --watch",
+    "build": "funpack"
+  },
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  },
+  "devDependencies": {
+    "@funpack/cli": "latest",
+    "@types/node": "^12.20.55"
+  }
+}
