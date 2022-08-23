@@ -16,6 +16,7 @@
     "build": "rimraf dist && tsc",
     "prepublishOnly": "npm run build"
   },
+  "repository": "https://github.com/XHMM/funpack",
   "files": [
     "bin",
     "dist",
