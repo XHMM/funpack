@@ -1,4 +1,4 @@
-/** @type {import("funpack").UserFunpackConfig} */
+/** @type {import("@funpack/cli").UserFunpackConfig} */
 export default {
   output: {
     dir: "./dist",
