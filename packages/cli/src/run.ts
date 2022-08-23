@@ -1,4 +1,4 @@
-import webpack from "webpack";
+import webpack, { web } from "webpack";
 import path from "path";
 import { promises as fs } from "fs";
 import url from "url";
@@ -9,11 +9,12 @@ import nodeExternals from "webpack-node-externals";
 
 import { getConfig } from "./config.js";
 import ListenDependenciesPlugin from "./plugins/ListenDependenciesPlugin.js";
+import { logError, logSuccess, logUnimportant } from "./logger.js";
 
 const require = createRequire(import.meta.url);
 
 process.on("unhandledRejection", (reason, promise) => {
-  console.log("Unhandled Rejection at:", promise, "reason:", reason);
+  logError(`Unhandled Rejection:`, { promise, reason });
 });
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -110,36 +111,32 @@ export async function run(watch: boolean = false) {
 
     const compiler = webpack(webpackConfig);
 
-    await new Promise((resolve, reject) => {
-      if (watch) {
-        const watching = compiler.watch({}, (err, stats) => {
-          if (err) {
-            return reject(err);
-          }
-          if (stats?.hasErrors()) {
-            const info = stats?.toJson();
-            return reject(info.errors);
-          }
-
-          console.log(`Watching`);
-        });
-      } else {
-        compiler.run(async (err, stats) => {
-          if (err) {
-            return reject(err);
-          }
-          if (stats?.hasErrors()) {
-            const info = stats?.toJson();
-            return reject(info.errors);
-          }
-
-          compiler.close(() => {
-            console.log(`Build finished`);
-          });
-        });
+    const compileCallback = (err?: null | Error, stats?: webpack.Stats) => {
+      if (err) {
+        logError(`Webpack error:`, err);
+        return;
       }
-    });
-  } catch (e) {
-    console.error("Something error:", e);
+      if (stats?.hasErrors()) {
+        const info = stats?.toJson();
+        logError(`Compile error:`, info?.errors);
+        return;
+      }
+
+      logSuccess(`Compiled success`);
+    };
+
+    if (watch) {
+      compiler.watch({}, compileCallback);
+      logUnimportant(`Watching...`);
+    } else {
+      compiler.run(async (err, stats) => {
+        compileCallback(err, stats);
+        compiler.close(() => {
+          logSuccess(`Build success`);
+        });
+      });
+    }
+  } catch (e: any) {
+    logError(`Something error:`, e);
   }
 }

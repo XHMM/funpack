@@ -27,9 +27,11 @@
   "types": "dist/type.d.ts",
   "dependencies": {
     "@swc/core": "^1.2.241",
+    "chalk": "^5.0.1",
     "clean-webpack-plugin": "^4.0.0",
     "commander": "^9.4.0",
     "copy-webpack-plugin": "^11.0.0",
+    "ora": "^6.1.2",
     "swc-loader": "^0.2.3",
     "webpack": "^5.74.0",
     "webpack-node-externals": "^3.0.0"
