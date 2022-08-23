@@ -10,6 +10,10 @@ export default class ListenDependenciesPlugin {
     compiler.hooks.afterEmit.tap(
       ListenDependenciesPlugin.name,
       (compilation) => {
+        if (compilation.getStats().hasErrors()) {
+          return;
+        }
+
         const modules = [...compilation.modules]
           // TODO: modules may have `ConcatenatedModule`(an optimized module)，webpack not export this class, so cannot use `instanceof` to check, here use `rootModule` to get wanted module
           // @ts-ignore
