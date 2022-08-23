@@ -146,11 +146,15 @@ export default class ListenDependenciesPlugin {
 
       const name = this.userRequest2EntryKeyMap![userRequest];
 
-      fs.symlinkSync(
-        path.join(process.cwd(), "node_modules"),
-        path.join(outputPath, name, "node_modules"),
-        "dir"
-      );
+      const distNodeModulesPath = path.join(outputPath, name, "node_modules");
+      if (!fs.existsSync(distNodeModulesPath)) {
+        fs.symlinkSync(
+          path.join(process.cwd(), "node_modules"),
+          path.join(outputPath, name, "node_modules"),
+          "dir"
+        );
+      }
+
       fs.writeFileSync(
         path.join(outputPath, name, "package.json"),
         JSON.stringify(
